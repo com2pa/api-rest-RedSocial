@@ -5,12 +5,14 @@ const app = express();
 const connection = require('./database/connection') 
 const cors = require('cors')
 // cargar rutas
-const userRouter =require('./controllers/user')
 const{usertExtractor}=require('./middleware/auth');
 const cookieParser = require('cookie-parser');
 
-const request = {};
-const response = {};
+// Rutas
+const userRouter = require('./controllers/user');
+const loginRouter = require('./controllers/login');
+const profileRouter = require('./controllers/profile');
+
 // Connect to MongoDB
 connection()
 
@@ -28,9 +30,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // usar rutas
-// app.use('/api/users',usertExtractor ,userRouter);
-app.get('/',(req,res)=>{
-   return res.status(200).send(' Bienvenido a la API de red social')
-})
+app.use('/api/users',userRouter)
+app.use('/api/login',loginRouter)
+app.use('/profile/:id',usertExtractor,profileRouter)
 
 module.exports = app;
