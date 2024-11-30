@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate =require('mongoose-paginate-v2')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -6,7 +7,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     lastname:String,
-
+    bio:String,
     nick:{
         type: String,
         required: true,
@@ -39,6 +40,7 @@ const userSchema = new mongoose.Schema({
         default: false
     }
 })
+userSchema.plugin(mongoosePaginate);
 userSchema.set('toJSON',{
     transform:(document,returnedObject)=>{
         returnedObject.id = returnedObject._id.toString();
@@ -47,6 +49,9 @@ userSchema.set('toJSON',{
         delete returnedObject.password;
     }
 })
+
+
+// Exportamos el modelo 'User' para usarlo en otros archivos
 const User = mongoose.model('User',userSchema);
 
 module.exports = User;
